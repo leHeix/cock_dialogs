@@ -25,7 +25,7 @@ CDiag:0(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-public OnPlayerCockSpoofing(playerid, dialogid)
+public OnPlayerCDiagSpoofing(playerid, dialogid)
 {
     SendClientMessage(playerid, -1, "You have been kicked for attempting to Spoof a Dialog!");
     SetTimerEx("DelayedKick", 1000, false, "i", playerid);
