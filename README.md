@@ -6,6 +6,13 @@ Example script:
 ```pawn
 #include <cock_dialogs>
 
+forward DelayedKick(playerid);
+public DelayedKick(playerid)
+{
+    Kick(playerid);
+    return 1;
+}
+
 public OnPlayerRequestClass(playerid, classid)
 {
 	ShowPlayerDialog(playerid, 0, DIALOG_STYLE_MSGBOX, "Hola, mundo!", "Hello, world!", "Accept", "bye");
@@ -17,6 +24,14 @@ CDiag:0(playerid, response, listitem, inputtext[])
 	SendClientMessage(playerid, -1, "Replied!");
 	return 1;
 }
+
+public OnPlayerCockSpoofing(playerid, dialogid)
+{
+    SendClientMessage(playerid, -1, "You have been kicked for attempting to Spoof a Dialog!");
+    SetTimerEx("DelayedKick", 1000, false, "i", playerid);
+    return 1;
+}
+
 ```
 
 ## Installation
