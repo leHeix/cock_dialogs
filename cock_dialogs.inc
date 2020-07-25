@@ -13,6 +13,8 @@
 
 new cock_Player_Dialog[MAX_PLAYERS] = {-1,...};
 
+forward OnPlayerCockSpoofing(playerid, dialogid);
+
 public OnPlayerConnect(playerid)
 {
     cock_Player_Dialog[playerid] = -1;
@@ -48,11 +50,20 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		format(dialog_name, 32, "cockd_%d_response", dialogid);
 		if(funcidx(dialog_name) != -1) CallLocalFunction(dialog_name, "ddds", playerid, response, listitem, inputtext);
 	}
-	
-	cock_Player_Dialog[playerid] = -1;
+	else CallLocalFunction("OnPlayerCockSpoofing", "ii", playerid, dialogid);
 	
 	#if defined CDiag_OnDialogResponse
 		return CDiag_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
+	#else
+		return 1;
+	#endif
+}
+
+public OnPlayerCockSpoofing(playerid, dialogid)
+{
+    cock_Player_Dialog[playerid] = -1;
+    #if defined CDiag_OnPlayerCockSpoofing
+		return CDiag_OnPlayerCockSpoofing(playerid, dialogid);
 	#else
 		return 1;
 	#endif
@@ -63,6 +74,7 @@ stock cdiag_ShowPlayerDialog(playerid, dialogid, style, const caption[], const i
 	cock_Player_Dialog[playerid] = dialogid;
 	return ShowPlayerDialog(playerid, dialogid, style, caption, info, button1, button2);
 }
+
 #if defined _ALS_ShowPlayerDialog
 	#undef ShowPlayerDialog
 #else
@@ -98,4 +110,14 @@ stock cdiag_ShowPlayerDialog(playerid, dialogid, style, const caption[], const i
 #define OnPlayerConnect CDiag_OnPlayerConnect
 #if defined CDiag_OnPlayerConnect
 	forward CDiag_OnPlayerConnect(playerid);
+#endif
+
+#if defined _ALS_OnPlayerCockSpoofing
+	#undef OnPlayerCockSpoofing
+#else
+	#define _ALS_OnPlayerCockSpoofing
+#endif
+#define OnPlayerCockSpoofing CDiag_OnPlayerCockSpoofing
+#if defined CDiag_OnPlayerCockSpoofing
+	forward CDiag_OnPlayerCockSpoofing(playerid, dialogid);
 #endif
