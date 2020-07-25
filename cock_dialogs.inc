@@ -5,7 +5,7 @@
 
 #define CDiag:%0(%1,%2,%3,%4) \
 		forward cockd_%0_response(%1, %2, %3, %4); \
-		public cockd_%0%_response(%1, %2, %3, %4)
+		public cockd_%0_response(%1, %2, %3, %4)
 
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
