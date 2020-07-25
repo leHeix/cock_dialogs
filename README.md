@@ -12,14 +12,12 @@ public OnPlayerRequestClass(playerid, classid)
 	return 1;
 }
 
-forward 0_Response(playerid, response, listitem, inputtext[]);
-public 0_Response(playerid, response, listitem, inputtext[])
+CDiag:0(playerid, response, listitem, inputtext[])
 {
 	SendClientMessage(playerid, -1, "Replied!");
 	return 1;
 }
 ```
-Create a public function that name is `DIALOGID_Response`, with the example script parameters.
 
 ## Installation
 Use `sampctl p install leHeix/cock_dialogs` or download cock_dialogs.inc and paste it in `pawno/include`, then include in your script.
