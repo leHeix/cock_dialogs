@@ -13,6 +13,17 @@
 
 new cock_Player_Dialog[MAX_PLAYERS] = {-1,...};
 
+forward OnPlayerCDiagSpoofing(playerid, dialogid);
+
+public OnPlayerConnect(playerid)
+{
+    cock_Player_Dialog[playerid] = -1;
+    #if defined CDiag_OnPlayerConnect
+		return CDiag_OnPlayerConnect(playerid);
+	#else
+		return 1;
+	#endif
+}
 public OnPlayerDisconnect(playerid, reason)
 {
 	cock_Player_Dialog[playerid] = -1;
@@ -39,8 +50,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		format(dialog_name, 32, "cockd_%d_response", dialogid);
 		if(funcidx(dialog_name) != -1) CallLocalFunction(dialog_name, "ddds", playerid, response, listitem, inputtext);
 	}
-	
-	cock_Player_Dialog[playerid] = -1;
+	else CallLocalFunction("OnPlayerCDiagSpoofing", "ii", playerid, dialogid);
 	
 	#if defined CDiag_OnDialogResponse
 		return CDiag_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
@@ -49,11 +59,22 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	#endif
 }
 
-stock cdiag_ShowPlayerDialog(playerid, dialogid, style, caption[], info[], button1[], button2[])
+public OnPlayerCDiagSpoofing(playerid, dialogid)
+{
+    cock_Player_Dialog[playerid] = -1;
+    #if defined CDiag_OnPlayerCDiagSpoofing
+		return CDiag_OnPlayerCDiagSpoofing(playerid, dialogid);
+	#else
+		return 1;
+	#endif
+}
+
+stock cdiag_ShowPlayerDialog(playerid, dialogid, style, const caption[], const info[], const button1[], const button2[])
 {
 	cock_Player_Dialog[playerid] = dialogid;
 	return ShowPlayerDialog(playerid, dialogid, style, caption, info, button1, button2);
 }
+
 #if defined _ALS_ShowPlayerDialog
 	#undef ShowPlayerDialog
 #else
@@ -76,7 +97,27 @@ stock cdiag_ShowPlayerDialog(playerid, dialogid, style, caption[], info[], butto
 #else
 	#define _ALS_OnPlayerDisconnect
 #endif
-#define OnPlayerConnect CDiag_OnPlayerDisconnect
+#define OnPlayerDisconnect CDiag_OnPlayerDisconnect
 #if defined CDiag_OnPlayerDisconnect
-	forward CDiag_OnPlayerDisconnect(playerid);
+	forward CDiag_OnPlayerDisconnect(playerid, reason);
+#endif
+
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
+#define OnPlayerConnect CDiag_OnPlayerConnect
+#if defined CDiag_OnPlayerConnect
+	forward CDiag_OnPlayerConnect(playerid);
+#endif
+
+#if defined _ALS_OnPlayerCDiagSpoofing
+	#undef OnPlayerCDiagSpoofing
+#else
+	#define _ALS_OnPlayerCDiagSpoofing
+#endif
+#define OnPlayerCDiagSpoofing CDiag_OnPlayerCDiagSpoofing
+#if defined CDiag_OnPlayerCDiagSpoofing
+	forward CDiag_OnPlayerCDiagSpoofing(playerid, dialogid);
 #endif
