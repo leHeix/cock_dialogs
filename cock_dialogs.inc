@@ -13,6 +13,15 @@
 
 new cock_Player_Dialog[MAX_PLAYERS] = {-1,...};
 
+public OnPlayerConnect(playerid)
+{
+    cock_Player_Dialog[playerid] = -1;
+    #if defined CDiag_OnPlayerConnect
+		return CDiag_OnPlayerConnect(playerid);
+	#else
+		return 1;
+	#endif
+}
 public OnPlayerDisconnect(playerid, reason)
 {
 	cock_Player_Dialog[playerid] = -1;
@@ -49,7 +58,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	#endif
 }
 
-stock cdiag_ShowPlayerDialog(playerid, dialogid, style, caption[], info[], button1[], button2[])
+stock cdiag_ShowPlayerDialog(playerid, dialogid, style, const caption[], const info[], const button1[], const button2[])
 {
 	cock_Player_Dialog[playerid] = dialogid;
 	return ShowPlayerDialog(playerid, dialogid, style, caption, info, button1, button2);
@@ -76,7 +85,17 @@ stock cdiag_ShowPlayerDialog(playerid, dialogid, style, caption[], info[], butto
 #else
 	#define _ALS_OnPlayerDisconnect
 #endif
-#define OnPlayerConnect CDiag_OnPlayerDisconnect
+#define OnPlayerDisconnect CDiag_OnPlayerDisconnect
 #if defined CDiag_OnPlayerDisconnect
-	forward CDiag_OnPlayerDisconnect(playerid);
+	forward CDiag_OnPlayerDisconnect(playerid, reason);
+#endif
+
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
+#define OnPlayerConnect CDiag_OnPlayerConnect
+#if defined CDiag_OnPlayerConnect
+	forward CDiag_OnPlayerConnect(playerid);
 #endif
