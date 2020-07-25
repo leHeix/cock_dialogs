@@ -48,6 +48,5 @@ public OnPlayerCDiagSpoofing(playerid, dialogid)
 }
 
 ```
-
 ## Installation
 Use `sampctl p install leHeix/cock_dialogs` or download cock_dialogs.inc and paste it in `pawno/include`, then include in your script.
