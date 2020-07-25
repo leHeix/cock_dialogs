@@ -7,9 +7,19 @@
     #define isnull(%1) ((!(%1[0])) || (((%1[0]) == '\1') && (!(%1[1]))))
 #endif
 
+#if defined SAMP_CONST_CORRECT
+	#define CDIAG_CONST const
+#else
+	#define CDIAG_CONST
+#endif
+
 #define CDiag:%0(%1,%2,%3,%4) \
 		forward cockd_%0_response(%1, %2, %3, %4); \
 		public cockd_%0_response(%1, %2, %3, %4)
+
+#if !defined _easyDialog_included
+	#define Dialog:%0(%1,%2,%3,%4) CDiag:%0(%1, %2, %3, %4)
+#endif
 
 new cock_Player_Dialog[MAX_PLAYERS] = {-1,...};
 
@@ -24,6 +34,7 @@ public OnPlayerConnect(playerid)
 		return 1;
 	#endif
 }
+
 public OnPlayerDisconnect(playerid, reason)
 {
 	cock_Player_Dialog[playerid] = -1;
@@ -52,6 +63,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	}
 	else CallLocalFunction("OnPlayerCDiagSpoofing", "ii", playerid, dialogid);
 	
+	cock_Player_Dialog[playerid] = -1;
+	
 	#if defined CDiag_OnDialogResponse
 		return CDiag_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 	#else
@@ -59,22 +72,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	#endif
 }
 
-public OnPlayerCDiagSpoofing(playerid, dialogid)
-{
-    cock_Player_Dialog[playerid] = -1;
-    #if defined CDiag_OnPlayerCDiagSpoofing
-		return CDiag_OnPlayerCDiagSpoofing(playerid, dialogid);
-	#else
-		return 1;
-	#endif
-}
-
-stock cdiag_ShowPlayerDialog(playerid, dialogid, style, const caption[], const info[], const button1[], const button2[])
+stock cdiag_ShowPlayerDialog(playerid, dialogid, style, CDIAG_CONST caption[], CDIAG_CONST info[], CDIAG_CONST button1[], CDIAG_CONST button2[])
 {
 	cock_Player_Dialog[playerid] = dialogid;
 	return ShowPlayerDialog(playerid, dialogid, style, caption, info, button1, button2);
 }
 
+/* 			Hooks				*/
 #if defined _ALS_ShowPlayerDialog
 	#undef ShowPlayerDialog
 #else
@@ -110,14 +114,4 @@ stock cdiag_ShowPlayerDialog(playerid, dialogid, style, const caption[], const i
 #define OnPlayerConnect CDiag_OnPlayerConnect
 #if defined CDiag_OnPlayerConnect
 	forward CDiag_OnPlayerConnect(playerid);
-#endif
-
-#if defined _ALS_OnPlayerCDiagSpoofing
-	#undef OnPlayerCDiagSpoofing
-#else
-	#define _ALS_OnPlayerCDiagSpoofing
-#endif
-#define OnPlayerCDiagSpoofing CDiag_OnPlayerCDiagSpoofing
-#if defined CDiag_OnPlayerCDiagSpoofing
-	forward CDiag_OnPlayerCDiagSpoofing(playerid, dialogid);
 #endif
