@@ -18,7 +18,7 @@
 		public cockd_%0_response(%1, %2, %3, %4)
 
 #if !defined _easyDialog_included
-	#define Dialog:%0(%1,%2,%3,%4) CDiag:%0(%1, %2, %3, %4)
+	#define Dialog CDiag
 #endif
 
 new cock_Player_Dialog[MAX_PLAYERS] = {-1,...};
