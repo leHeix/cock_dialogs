@@ -59,7 +59,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 		new dialog_name[32];
 		format(dialog_name, 32, "cockd_%d_response", dialogid);
-		if(funcidx(dialog_name) != -1) CallLocalFunction(dialog_name, "ddds", playerid, response, listitem, inputtext);
+		CallLocalFunction(dialog_name, "ddds", playerid, response, listitem, inputtext);
 	}
 	else CallLocalFunction("OnPlayerCDiagSpoofing", "ii", playerid, dialogid);
 	
