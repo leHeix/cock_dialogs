@@ -16,6 +16,7 @@ public DelayedKick(playerid)
 public OnPlayerConnect(playerid)
 {
 	SpoofAttempts[playerid] = 0;
+	return 1;
 }
 
 public OnPlayerRequestClass(playerid, classid)
@@ -27,27 +28,9 @@ public OnPlayerRequestClass(playerid, classid)
 CDiag:0(playerid, response, listitem, inputtext[])
 {
 	if(!response) return 0;
-	else ShowPlayerDialog(playerid, 1, DIALOG_STYLE_MSGBOX, "responses!", "Replied!!!", "Accept", "bye");
-	return 1;
-}
-
-public CDiag_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
-{
-	switch(dialogid)
-	{
-		case 1:
-		{
-			if(!response) return 0;
-			else ShowPlayerDialog(playerid, 2, DIALOG_STYLE_MSGBOX, "responses2!", "Replied again!!!", "Accept", "bye");
-			return 1;
-		}
-		case 2:
-		{
-			if(!response) return 0;
-			else ShowPlayerDialog(playerid, 3, DIALOG_STYLE_MSGBOX, "responses3!", "and again!!!", "Accept", "bye");
-			return 1;
-		}
-	}
+	
+	ShowPlayerDialog(playerid, 1, DIALOG_STYLE_MSGBOX, "responses!", "Replied!!!", "Accept", "bye");
+	
 	return 1;
 }
 
