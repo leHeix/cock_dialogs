@@ -23,8 +23,6 @@
 
 new cock_Player_Dialog[MAX_PLAYERS] = {-1,...};
 
-forward OnPlayerCDiagSpoofing(playerid, dialogid);
-
 public OnPlayerConnect(playerid)
 {
     cock_Player_Dialog[playerid] = -1;
@@ -61,7 +59,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		format(dialog_name, 32, "cockd_%d_response", dialogid);
 		CallLocalFunction(dialog_name, "ddds", playerid, response, listitem, inputtext);
 	}
-	else CallLocalFunction("OnPlayerCDiagSpoofing", "ii", playerid, dialogid);
 	
 	cock_Player_Dialog[playerid] = -1;
 	
