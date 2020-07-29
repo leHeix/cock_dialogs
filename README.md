@@ -5,19 +5,6 @@ Fastest dialog handler for SA-MP.
 Example script:
 ```pawn
 #include <cock_dialogs>
-new SpoofAttempts[MAX_PLAYERS];
-forward DelayedKick(playerid);
-public DelayedKick(playerid)
-{
-    Kick(playerid);
-    return 1;
-}
-
-public OnPlayerConnect(playerid)
-{
-	SpoofAttempts[playerid] = 0;
-	return 1;
-}
 
 public OnPlayerRequestClass(playerid, classid)
 {
@@ -28,27 +15,8 @@ public OnPlayerRequestClass(playerid, classid)
 CDiag:0(playerid, response, listitem, inputtext[])
 {
 	if(!response) return 0;
-	
 	ShowPlayerDialog(playerid, 1, DIALOG_STYLE_MSGBOX, "responses!", "Replied!!!", "Accept", "bye");
-	
 	return 1;
-}
-
-public OnPlayerCDiagSpoofing(playerid, dialogid)
-{
-	if(SpoofAttempts[playerid] != 3)
-	{
-		SendClientMessage(playerid, -1, "You have attempted to Spoof a Dialog, repeated attempts will get you kicked!");
-		SpoofAttempts[playerid] ++;
-		return 1;
-	}
-	else
-	{
-		SendClientMessage(playerid, -1, "You have been kicked for attempting to Spoof a Dialog!");
-		SetTimerEx("DelayedKick", 1000, false, "i", playerid);
-		return 1;
-	}
-    return 1;
 }
 
 ```
