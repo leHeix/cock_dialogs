@@ -1,4 +1,4 @@
-#if defined inc_cock_dialogs
+#if defined _inc_cock_dialogs
 	#endinput
 #endif
 #define _inc_cock_dialogs
